@@ -40,7 +40,7 @@
                 <span class="x-red">*</span>用户名
             </label>
             <div class="layui-input-inline">
-                <input type="text" id="L_email" name="username" value=${user.username} required="required"
+                <input type="text" id="L_email" name="username" value=${user.userName} required="required"
                        autocomplete="off" class="layui-input">
             </div>
             <div class="layui-form-mid layui-word-aux">
@@ -52,7 +52,7 @@
                 <span class="x-red">*</span>手机号
             </label>
             <div class="layui-input-inline">
-                <input type="text" id="L_username" name="phone"  value=${user.phone} required="" lay-verify="nikename"
+                <input type="text" id="L_username" name="phone"  value=${user.userPhone} required="" lay-verify="nikename"
                        autocomplete="off" class="layui-input">
             </div>
         </div>
@@ -61,7 +61,7 @@
                 <span class="x-red">*</span>地址
             </label>
             <div class="layui-input-inline">
-                <input type="text" name="addr" required="" value=${user.addr} lay-verify="nikename"
+                <input type="text" name="addr" required="" value=${user.userAddress} lay-verify="nikename"
                        autocomplete="off" class="layui-input">
             </div>
         </div>
@@ -70,7 +70,7 @@
                 <span class="x-red">*</span>密码
             </label>
             <div class="layui-input-inline">
-                <input type="password" id="L_pass" name="password" value=${user.password} required="" lay-verify="pass"
+                <input type="password" id="L_pass" name="password" value=${user.userPassword} required="" lay-verify="pass"
                        autocomplete="off" class="layui-input">
             </div>
             <div class="layui-form-mid layui-word-aux">
@@ -82,7 +82,7 @@
                 <span class="x-red">*</span>确认密码
             </label>
             <div class="layui-input-inline">
-                <input type="password" id="L_repass" name="rpassword" value=${user.password} required="" lay-verify="repass"
+                <input type="password" id="L_repass" name="rpassword" value=${user.userPassword} required="" lay-verify="repass"
                        autocomplete="off" class="layui-input">
             </div>
         </div>

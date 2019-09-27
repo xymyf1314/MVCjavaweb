@@ -12,24 +12,24 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 public class User implements Serializable {
     private Integer id;
-    private String username;
-    private String password;
-    private String phone;
-    private String addr;
-    private Timestamp rdate;
+    private String userName;
+    private String userPassword;
+    private String userPhone;
+    private String userAddress;
+    private Timestamp userRegisterDate;
 
-    public User(String username, String password, String phone, String addr) {
-        this.username = username;
-        this.password = password;
-        this.phone = phone;
-        this.addr = addr;
+    public User(String userName, String userPassword, String userPhone, String userAddress) {
+        this.userName = userName;
+        this.userPassword = userPassword;
+        this.userPhone = userPhone;
+        this.userAddress = userAddress;
     }
 
-    public User(Integer id, String username, String password, String phone, String addr) {
+    public User(Integer id, String userName, String userPassword, String userPhone, String userAddress) {
         this.id = id;
-        this.username = username;
-        this.password = password;
-        this.phone = phone;
-        this.addr = addr;
+        this.userName = userName;
+        this.userPassword = userPassword;
+        this.userPhone = userPhone;
+        this.userAddress = userAddress;
     }
 }

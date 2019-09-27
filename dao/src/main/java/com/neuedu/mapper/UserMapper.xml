@@ -3,21 +3,32 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.neuedu.mapper.UserMapper">
-    <select id="findAll" resultType="User">
-    select id,username,password,phone,addr,rdate from t_user
+    <sql id="basesql">select id,user_name,user_password,user_phone,user_address,user_register_date</sql>
+    <select id="findAll" resultMap="res">
+        <include refid="basesql"/>
+        from t_user
     </select>
-    <select id="findById" resultType="User">
-    select id,username,password,phone,addr,rdate from t_user where id=#{id}
+    <select id="findById" resultMap="res">
+    select id,user_name,user_password,user_phone,user_address,user_register_date from t_user where id=#{id}
     </select>
-    <select id="findByName" resultType="User" parameterType="String">
-    select id,username,password,phone,addr,rdate from t_user where username=#{username}
+    <select id="findByName" resultMap="res" parameterType="String">
+    select id,user_name,user_password,user_phone,user_address,user_register_date from t_user where user_name=#{userName}
     </select>
+    <resultMap id="res" type="User">
+        <id property="id" column="id" javaType="Integer"/>
+        <result property="userName" column="user_name" javaType="String"/>
+        <result property="userPassword" column="user_password" javaType="String"/>
+        <result property="userPhone" column="user_phone" javaType="String"/>
+        <result property="userAddress" column="user_address" javaType="String"/>
+        <result property="userRegisterDate" column="user_register_date"/>
+    </resultMap>
+
 
     <insert id="add" parameterType="User">
-        insert into t_user(username, password, phone, addr) values (#{username},md5(#{password}),#{phone},#{addr})
+        insert into t_user(user_name,user_password,user_phone,user_address) values (#{userName},md5(#{userPassword}),#{userPhone},#{userAddress})
     </insert>
     <update id="update" parameterType="User">
-        update t_user set username=#{username},password=md5(#{password}),phone=#{phone},addr=#{addr} where id=#{id}
+        update t_user set user_name=#{userName},user_password=md5(#{userPassword}),user_phone=#{userPhone},user_address=#{userAddress} where id=#{id}
     </update>
 
     <delete id="del" parameterType="int">

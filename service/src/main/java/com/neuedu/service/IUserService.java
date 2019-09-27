@@ -10,7 +10,7 @@ public interface IUserService {
 
     User findById(int id);
 
-    User findByName(String username);
+    User findByName(String userName);
 
     boolean add(User user);
 
@@ -18,6 +18,6 @@ public interface IUserService {
 
     boolean del(int id);
 
-    User logIn(String username, String password);
+    public User logIn(String userName, String userPassword);
 
 }

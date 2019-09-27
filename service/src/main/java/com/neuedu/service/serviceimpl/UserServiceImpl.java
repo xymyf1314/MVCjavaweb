@@ -32,15 +32,15 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public User findByName(String username) {
+    public User findByName(String userName) {
         System.out.println("通过name查找");
-        return userMapper.findByName(username);
+        return userMapper.findByName(userName);
     }
 
     @Override
     public boolean add(User user) {
         System.out.println("添加的事务");
-        User result = this.findByName(user.getUsername());
+        User result = this.findByName(user.getUserName());
         boolean add = false;
         if (result == null) {
             add = userMapper.add(user);
@@ -62,11 +62,11 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public User logIn(String username, String password) {
+    public User logIn(String userName, String password) {
         System.out.println("服务层登陆事务");
-        User user = this.findByName(username);
+        User user = this.findByName(userName);
         if (user != null) {
-            if (user.getPassword().equals(ServletUtil.md5(password))) {
+            if (user.getUserPassword().equals(ServletUtil.md5(password))) {
                 return user;
             }
         }

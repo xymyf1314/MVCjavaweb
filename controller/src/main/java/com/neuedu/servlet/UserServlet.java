@@ -37,7 +37,7 @@ public class UserServlet extends HttpServlet {
             System.out.println("findAll");
             List<User> users = userService.findAll();
             request.setAttribute("users", users);
-            request.getRequestDispatcher("member-list.jsp").forward(request, response);
+            request.getRequestDispatcher("user-list.jsp").forward(request, response);
 
         } else if ("add".equals(method)) {
             System.out.println("add");
@@ -51,15 +51,15 @@ public class UserServlet extends HttpServlet {
             User user = userService.findById(id);
             request.setAttribute("user", user);
             System.out.println(user);
-            request.getRequestDispatcher("member-edit.jsp").forward(request, response);
+            request.getRequestDispatcher("user-edit.jsp").forward(request, response);
         } else if ("update".equals(method)) {
             System.out.println("update");
             User user = new User();
             user.setId(Integer.parseInt(request.getParameter("id")));
-            user.setUsername(request.getParameter("username"));
-            user.setPassword(request.getParameter("password"));
-            user.setPhone(request.getParameter("phone"));
-            user.setAddr(request.getParameter("addr"));
+            user.setUserName(request.getParameter("username"));
+            user.setUserPassword(request.getParameter("password"));
+            user.setUserPhone(request.getParameter("phone"));
+            user.setUserAddress(request.getParameter("addr"));
             System.out.println(user);
             boolean update = userService.update(user);
             System.out.println(update);

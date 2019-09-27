@@ -9,7 +9,7 @@ public interface UserMapper {
 
     User findById(int id);
 
-    User findByName(String username);
+    User findByName(String userName);
 
     boolean add(User user);
 
