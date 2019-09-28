@@ -51,6 +51,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public boolean update(User user) {
         System.out.println("修改的事务");
+        System.out.println(user);
         return userMapper.update(user);
     }
 

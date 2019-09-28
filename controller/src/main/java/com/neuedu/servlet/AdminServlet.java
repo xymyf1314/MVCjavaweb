@@ -1,8 +1,11 @@
 package com.neuedu.servlet;
 
 import com.neuedu.entity.Admin;
+import com.neuedu.entity.User;
 import com.neuedu.mapper.AdminMapper;
+import com.neuedu.mapper.UserMapper;
 import com.neuedu.service.serviceimpl.AdminServiceImpl;
+import com.neuedu.service.serviceimpl.UserServiceImpl;
 import com.neuedu.util.MyBatisUtil;
 import com.neuedu.util.ServletUtil;
 import org.apache.ibatis.session.SqlSession;
@@ -33,6 +36,9 @@ public class AdminServlet extends HttpServlet {
         AdminMapper mapper = session.getMapper(AdminMapper.class);
         // 调用服务层
         AdminServiceImpl adminService = new AdminServiceImpl(mapper);
+        UserMapper uMapper = session.getMapper(UserMapper.class);
+        // 调用服务层
+        UserServiceImpl userService = new UserServiceImpl(uMapper);
         String url = request.getRequestURL().toString();
         String substring = url.substring(url.lastIndexOf("/"), url.lastIndexOf(".admin"));
         if ("/findAll".equals(substring)) {
@@ -89,7 +95,7 @@ public class AdminServlet extends HttpServlet {
             String aname = request.getParameter("aname");
             String apwd = request.getParameter("apwd");
             String yzm = request.getParameter("yzm");
-            if (!(checkcode.equals(yzm))){
+            if (!(checkcode.equals(yzm))) {
                 request.setAttribute("msg", "验证码错误");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             }
@@ -97,7 +103,7 @@ public class AdminServlet extends HttpServlet {
             if (admin != null) {
                 HttpSession httpSession = request.getSession();
                 httpSession.setAttribute("admin", admin);
-                response.sendRedirect(request.getContextPath()+"/index.jsp");
+                response.sendRedirect(request.getContextPath() + "/index.jsp");
                 System.out.println("登陆成功");
             } else {
                 request.setAttribute("msg", "用户名或密码错误");
@@ -106,7 +112,16 @@ public class AdminServlet extends HttpServlet {
             }
         } else if ("/logout".equals(substring)) {
             request.getSession().invalidate();
-            response.sendRedirect(request.getContextPath()+"/login.jsp");
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
+        } else if ("/reset".equals(substring)) {
+            System.out.println("reset");
+            int id = Integer.parseInt(request.getParameter("id"));
+            User user = userService.findById(id);
+            user.setUserPassword("123456");
+            System.out.println(user);
+            boolean update = userService.update(user);
+            session.commit();
+            response.sendRedirect("userServlet?method=findAll");
         }
     }
 
