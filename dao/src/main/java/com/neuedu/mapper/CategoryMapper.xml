@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neuedu.mapper.CategoryMapper">
+    <select id="findAll" resultMap="selectMap">
+        select id, category_name, category_description, category_parent_id, leaf, grade
+        from t_category
+    </select>
+    <select id="findById" resultMap="selectMap" parameterType="int">
+        select id, category_name, category_description, category_parent_id, leaf, grade
+        from t_category
+        where id = #{id}
+    </select>
+    <select id="selectCategoryChildrenByPid" resultMap="selectMap" parameterType="Integer">
+        select id, category_name, category_description, category_parent_id, leaf, grade
+        from t_category
+        where category_parent_id = #{id}
+    </select>
+    <select id="findToTree" resultMap="selectMap">
+        select id, category_name, category_description, category_parent_id, leaf, grade
+        from t_category
+        where category_parent_id = 0
+    </select>
+    <!--    <select id="findByName" resultMap="selectMap" parameterType="String">-->
+    <!--    select id,aName,aPwd from t_admin where aname=#{aName}-->
+    <!--    </select>-->
+    <resultMap id="selectMap" type="Category">
+        <result property="id" column="id"/>
+        <result property="categoryName" column="category_name"/>
+        <result property="categoryDescription" column="category_description"/>
+        <result property="categoryParentId" column="category_parent_id"/>
+        <result property="leaf" column="leaf"/>
+        <result property="grade" column="grade"/>
+        <collection column="id" property="children" ofType="Category" select="selectCategoryChildrenByPid"></collection>
+    </resultMap>
+    <insert id="insertRoot" parameterType="Category">
+        insert into t_category
+        values (null, #{categoryName}, #{categoryDescription}, 0, 1, 1)
+    </insert>
+    <insert id="insertChild" parameterType="Category">
+        insert into t_category
+        values (null, #{categoryName}, #{categoryDescription}, #{categoryParentId}, 1, #{grade})
+    </insert>
+    <update id="update" parameterType="Category">
+        update t_category
+        set category_name=#{categoryName},
+            category_description=#{categoryDescription},
+            category_parent_id=#{categoryParentId},
+            leaf=#{left},
+            grade=#{grade}
+        where id = #{id}
+    </update>
+    <!--    <delete id="del" parameterType="int">-->
+    <!--        delete from t_admin where id =#{id}-->
+    <!--    </delete>-->
+
+</mapper>
