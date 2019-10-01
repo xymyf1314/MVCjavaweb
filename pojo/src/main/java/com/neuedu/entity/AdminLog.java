@@ -9,15 +9,17 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Admin implements Serializable {
+public class AdminLog implements Serializable {
     private Integer id;
     private String aName;
-    private String aPwd;
+    private String operation;
     private Integer jurisdiction;
+    private String operationTime;
 
-    public Admin(Integer id, String aName, String aPwd) {
+    public AdminLog(Integer id, String aName, String operation, Integer jurisdiction) {
         this.id = id;
         this.aName = aName;
-        this.aPwd = aPwd;
+        this.operation = operation;
+        this.jurisdiction = jurisdiction;
     }
 }

@@ -1,7 +1,11 @@
 package com.neuedu.servlet;
 
+import com.neuedu.entity.Admin;
 import com.neuedu.entity.User;
+import com.neuedu.mapper.AdminMapper;
+import com.neuedu.mapper.AdminOperationLogMapper;
 import com.neuedu.mapper.UserMapper;
+import com.neuedu.service.serviceimpl.AdminOperationLogServiceImpl;
 import com.neuedu.service.serviceimpl.UserServiceImpl;
 import com.neuedu.util.MyBatisUtil;
 import com.neuedu.util.ServletUtil;
@@ -12,6 +16,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
@@ -29,9 +34,13 @@ public class UserServlet extends HttpServlet {
         // 解决中文乱码
         ServletUtil.setCharacter(request, response);
         SqlSession session = MyBatisUtil.getSqlSession("mybatis-config.xml");
+        HttpSession httpSession = request.getSession();
         UserMapper mapper = session.getMapper(UserMapper.class);
+        AdminMapper adminMapper = session.getMapper(AdminMapper.class);
+        AdminOperationLogMapper adminOperationLogMapper = session.getMapper(AdminOperationLogMapper.class);
         // 调用服务层
         UserServiceImpl userService = new UserServiceImpl(mapper);
+        AdminOperationLogServiceImpl adminOperationLogService = new AdminOperationLogServiceImpl(adminOperationLogMapper);
         String method = request.getParameter("method");
         if ("findAll".equals(method)) {
             System.out.println("findAll");
@@ -42,7 +51,10 @@ public class UserServlet extends HttpServlet {
         } else if ("add".equals(method)) {
             System.out.println("add");
             User user = new User(request.getParameter("username"), request.getParameter("password"), request.getParameter("phone"), request.getParameter("addr"));
+            Admin admin = (Admin) httpSession.getAttribute("admin");
             userService.add(user);
+            User user1 = userService.findByName(user.getUserName());
+            adminOperationLogService.add(admin, user1, "增加");
             session.commit();
             response.sendRedirect("userServlet?method=findAll");
         } else if ("load".equals(method)) {
@@ -50,26 +62,29 @@ public class UserServlet extends HttpServlet {
             int id = Integer.parseInt(request.getParameter("id"));
             User user = userService.findById(id);
             request.setAttribute("user", user);
-            System.out.println(user);
             request.getRequestDispatcher("user-edit.jsp").forward(request, response);
         } else if ("update".equals(method)) {
             System.out.println("update");
             User user = new User();
-            user.setId(Integer.parseInt(request.getParameter("id")));
+            int id = Integer.parseInt(request.getParameter("id"));
+            user.setId(id);
             user.setUserName(request.getParameter("username"));
             user.setUserPassword(request.getParameter("password"));
             user.setUserPhone(request.getParameter("phone"));
             user.setUserAddress(request.getParameter("addr"));
-            System.out.println(user);
+            User user1 = userService.findById(id);
+            Admin admin = (Admin) httpSession.getAttribute("admin");
+            boolean add = adminOperationLogService.add(admin, user1, "修改");
+            System.out.println("===================");
             boolean update = userService.update(user);
-            System.out.println(update);
             session.commit();
             response.sendRedirect("userServlet?method=findAll");
         } else if ("del".equals(method)) {
             System.out.println("del");
-//            String id = request.getParameter("uid");
             int id = Integer.parseInt(request.getParameter("id"));
-            System.out.println(id);
+            User user = userService.findById(id);
+            Admin admin = (Admin) httpSession.getAttribute("admin");
+            adminOperationLogService.add(admin, user, "删除");
             boolean del = userService.del(id);
             session.commit();
             response.sendRedirect("userServlet?method=findAll");

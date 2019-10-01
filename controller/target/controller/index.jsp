@@ -48,8 +48,8 @@
             <a href="javascript:;">${admin.AName}</a>
             <dl class="layui-nav-child"> <!-- 二级菜单 -->
                 <dd><a onclick="x_admin_show('个人信息','http://www.baidu.com')">个人信息</a></dd>
-                <dd><a href="<%=request.getContextPath()%>/logout.admin">切换帐号</a></dd>
-                <dd><a href="<%=request.getContextPath()%>/logout.admin">退出</a></dd>
+                <dd><a href="<%=request.getContextPath()%>/logout.admin?id=${admin.id}&aName=${admin.AName}">切换帐号</a></dd>
+                <dd><a href="<%=request.getContextPath()%>/logout.admin?id=${admin.id}&aName=${admin.AName}">退出</a></dd>
             </dl>
         </li>
         <li class="layui-nav-item to-index"><a href="/">前台首页</a></li>
@@ -182,15 +182,15 @@
                         </a>
                     </li>
                     <li>
-                        <a _href="admin-role.html">
+                        <a _href="loginLog.admin">
                             <i class="iconfont">&#xe6a7;</i>
-                            <cite>角色管理</cite>
+                            <cite>管理员登录日志</cite>
                         </a>
                     </li>
                     <li>
-                        <a _href="admin-cate.html">
+                        <a _href="adminOperationLog.admin">
                             <i class="iconfont">&#xe6a7;</i>
-                            <cite>权限分类</cite>
+                            <cite>管理员操作日志</cite>
                         </a>
                     </li>
                     <li>

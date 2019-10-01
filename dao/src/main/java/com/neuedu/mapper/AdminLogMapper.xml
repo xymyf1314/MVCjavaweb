@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neuedu.mapper.AdminLogMapper">
+    <select id="findAll" resultMap="selectMap">
+    select id,aname,operation,jurisdiction,operation_time from t_admin_log
+    </select>
+    <select id="findById" resultMap="selectMap">
+    select id,aname,operation,jurisdiction,operation_time from t_admin_log where id=#{id}
+    </select>
+    <select id="findByName" resultMap="selectMap" parameterType="String">
+    select id,aname,operation,jurisdiction,operation_time from t_admin_log where aname=#{aName}
+    </select>
+    <resultMap id="selectMap" type="AdminLog">
+        <result property="id" column="id"/>
+        <result property="aName" column="aname"/>
+        <result property="operation" column="operation"/>
+        <result property="jurisdiction" column="jurisdiction"/>
+        <result property="operationTime" column="operation_time"/>
+    </resultMap>
+    <insert id="add" parameterMap="insert">
+        insert into t_admin_log(id,aname,operation,jurisdiction) values (#{id},#{aName},#{operation},#{jurisdiction})
+    </insert>
+<!--    <update id="update" parameterMap="insert">-->
+<!--        update t_admin_log set aname=#{aName},apwd=#{aPwd} where id=#{id}-->
+<!--    </update>-->
+    <parameterMap id="insert" type="AdminLog">
+        <parameter property="id" resultMap="selectMap"/>
+        <parameter property="aName" resultMap="selectMap"/>
+        <parameter property="operation" resultMap="selectMap"/>
+        <parameter property="jurisdiction" resultMap="jurisdiction"/>
+        <parameter property="operationTime" resultMap="selectMap"/>
+    </parameterMap>
+    <delete id="del" parameterType="int">
+        delete from t_admin_log where id =#{id}
+    </delete>
+
+</mapper>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neuedu.mapper.AdminOperationLogMapper">
+    <select id="findAll" resultMap="selectMap">
+        select id,
+               aname,
+               operation,
+               uid,
+               user_name,
+               user_password,
+               user_phone,
+               user_address,
+               user_register_date,
+               operation_time
+        from t_admin_operation_log
+    </select>
+    <select id="findById" resultMap="selectMap">
+        select id,
+               aname,
+               operation,
+               uid,
+               user_name,
+               user_password,
+               user_phone,
+               user_address,
+               user_register_date
+        from t_admin_operation_log
+        where id = #{id}
+    </select>
+    <select id="findByName" resultMap="selectMap" parameterType="String">
+        select id,
+               aname,
+               operation,
+               uid,
+               user_name,
+               user_password,
+               user_phone,
+               user_address,
+               user_register_date,
+               operation_time
+        from t_admin_operation_log
+        where aname = #{aName}
+    </select>
+    <resultMap id="selectMap" type="AdminOperationLog">
+        <result property="id" column="id"/>
+        <result property="aName" column="aname"/>
+        <result property="operation" column="operation"/>
+        <result property="uid" column="uid"/>
+        <result property="userName" column="user_name"/>
+        <result property="userPassword" column="user_password"/>
+        <result property="userPhone" column="user_phone"/>
+        <result property="userAddress" column="user_address"/>
+        <result property="userRegisterDate" column="user_register_date"/>
+        <result property="operationTime" column="operation_time"/>
+    </resultMap>
+    <insert id="add" parameterMap="insert">
+        insert into t_admin_operation_log(id,aname,operation,uid,user_name,user_password,user_phone,user_address,user_register_date)
+        values (#{id}, #{aName}, #{operation},#{uid},#{userName}, #{userPassword}, #{userPhone}, #{userAddress},
+                #{userRegisterDate})
+    </insert>
+    <!--    <update id="update" parameterMap="insert">-->
+    <!--        update t_admin_log set aname=#{aName},apwd=#{aPwd} where id=#{id}-->
+    <!--    </update>-->
+    <parameterMap id="insert" type="AdminOperationLog">
+        <parameter property="id" resultMap="selectMap"/>
+        <parameter property="aName" resultMap="selectMap"/>
+        <parameter property="operation" resultMap="selectMap"/>
+        <parameter property="uid" resultMap="selectMap"/>
+        <parameter property="userName" resultMap="selectMap"/>
+        <parameter property="userPassword" resultMap="selectMap"/>
+        <parameter property="userPhone" resultMap="selectMap"/>
+        <parameter property="userAddress" resultMap="selectMap"/>
+        <parameter property="userRegisterDate" resultMap="selectMap"/>
+        <parameter property="operationTime" resultMap="selectMap"/>
+    </parameterMap>
+    <delete id="del" parameterType="int">
+        delete
+        from t_admin_operation_log
+        where id = #{id}
+    </delete>
+
+</mapper>

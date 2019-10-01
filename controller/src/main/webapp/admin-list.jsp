@@ -57,6 +57,7 @@
             <th>ID</th>
             <th>管理员用户名</th>
             <th>密码</th>
+            <th>权限</th>
             <th>操作</th>
         </thead>
         <tbody>
@@ -68,6 +69,7 @@
             <td class="aid">${admin.id}</td>
             <td>${admin.AName}</td>
             <td>${admin.APwd}</td>
+            <td>${admin.jurisdiction}</td>
             <td>
               <a title="编辑"  onclick="x_admin_show(this,'<%=request.getContextPath()%>/load.admin?id=${admin.id}')" href="javascript:;">
                 <i class="layui-icon">&#xe642;</i>

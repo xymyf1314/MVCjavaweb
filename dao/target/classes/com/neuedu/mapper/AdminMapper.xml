@@ -4,21 +4,22 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.neuedu.mapper.AdminMapper">
     <select id="findAll" resultMap="selectMap">
-    select id,aName,aPwd from t_admin
+    select id,aName,aPwd,jurisdiction from t_admin
     </select>
     <select id="findById" resultMap="selectMap">
-    select id,aName,aPwd from t_admin where id=#{id}
+    select id,aName,aPwd,jurisdiction from t_admin where id=#{id}
     </select>
     <select id="findByName" resultMap="selectMap" parameterType="String">
-    select id,aName,aPwd from t_admin where aname=#{aName}
+    select id,aName,aPwd,jurisdiction from t_admin where aname=#{aName}
     </select>
     <resultMap id="selectMap" type="Admin">
         <result property="id" column="id"/>
         <result property="aName" column="aname"/>
         <result property="aPwd" column="apwd"/>
+        <result property="jurisdiction" column="jurisdiction"/>
     </resultMap>
     <insert id="add" parameterMap="insert">
-        insert into t_admin values (null,#{aName},md5(#{aPwd}))
+        insert into t_admin values (null,#{aName},md5(#{aPwd}),1)
     </insert>
     <update id="update" parameterMap="insert">
         update t_admin set aname=#{aName},apwd=#{aPwd} where id=#{id}

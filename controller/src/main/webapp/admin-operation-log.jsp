@@ -6,7 +6,7 @@
   
   <head>
     <meta charset="UTF-8">
-    <title>欢迎页面-X-admin2.1</title>
+    <title>管理员操作日志</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
@@ -54,24 +54,36 @@
             <th>
               <div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i class="layui-icon">&#xe605;</i></div>
             </th>
-            <th>ID</th>
-            <th>管理员用户名</th>
-            <th>密码</th>
-            <th>权限</th>
-            <th>操作</th>
+            <th>管理员ID</th>
+            <th>管理员名</th>
+            <th>所做操作</th>
+            <th>用户原id</th>
+            <th>原用户名</th>
+            <th>用户原密码</th>
+            <th>用户原手机号</th>
+            <th>用户原地址</th>
+            <th>用户原注册时间</th>
+            <th>操作时间</th>
+            <th>回滚</th>
         </thead>
         <tbody>
-        <c:forEach  items="${admins}" var="admin">
+        <c:forEach  items="${adminOperationLogs}" var="adminOperationLog">
           <tr>
             <td>
               <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i class="layui-icon">&#xe605;</i></div>
             </td>
-            <td class="aid">${admin.id}</td>
-            <td>${admin.AName}</td>
-            <td>${admin.APwd}</td>
-            <td>${admin.jurisdiction}</td>
+            <td class="aid">${adminOperationLog.id}</td>
+            <td>${adminOperationLog.AName}</td>
+            <td>${adminOperationLog.operation}</td>
+            <td>${adminOperationLog.uid}</td>
+            <td>${adminOperationLog.userName}</td>
+            <td>${adminOperationLog.userPassword}</td>
+            <td>${adminOperationLog.userPhone}</td>
+            <td>${adminOperationLog.userAddress}</td>
+            <td>${adminOperationLog.userRegisterDate}</td>
+            <td>${adminOperationLog.operationTime}</td>
             <td>
-              <a title="编辑"  onclick="x_admin_show(this,'<%=request.getContextPath()%>/load.admin?id=${admin.id}')" href="javascript:;">
+              <a title="编辑"  onclick="x_admin_show(this,'<%=request.getContextPath()%>/load.admin?id=${adminLog.id}')" href="javascript:;">
                 <i class="layui-icon">&#xe642;</i>
               </a>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

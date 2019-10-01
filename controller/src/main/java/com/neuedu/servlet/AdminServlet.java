@@ -1,9 +1,15 @@
 package com.neuedu.servlet;
 
 import com.neuedu.entity.Admin;
+import com.neuedu.entity.AdminLog;
+import com.neuedu.entity.AdminOperationLog;
 import com.neuedu.entity.User;
+import com.neuedu.mapper.AdminLogMapper;
 import com.neuedu.mapper.AdminMapper;
+import com.neuedu.mapper.AdminOperationLogMapper;
 import com.neuedu.mapper.UserMapper;
+import com.neuedu.service.serviceimpl.AdminLogServiceImpl;
+import com.neuedu.service.serviceimpl.AdminOperationLogServiceImpl;
 import com.neuedu.service.serviceimpl.AdminServiceImpl;
 import com.neuedu.service.serviceimpl.UserServiceImpl;
 import com.neuedu.util.MyBatisUtil;
@@ -33,20 +39,53 @@ public class AdminServlet extends HttpServlet {
         // 解决中文乱码
         ServletUtil.setCharacter(request, response);
         SqlSession session = MyBatisUtil.getSqlSession("mybatis-config.xml");
+        HttpSession httpSession = request.getSession();
         AdminMapper mapper = session.getMapper(AdminMapper.class);
+        UserMapper uMapper = session.getMapper(UserMapper.class);
+        AdminLogMapper Lmapper = session.getMapper(AdminLogMapper.class);
+        AdminOperationLogMapper AOmapper = session.getMapper(AdminOperationLogMapper.class);
         // 调用服务层
         AdminServiceImpl adminService = new AdminServiceImpl(mapper);
-        UserMapper uMapper = session.getMapper(UserMapper.class);
-        // 调用服务层
         UserServiceImpl userService = new UserServiceImpl(uMapper);
+        AdminLogServiceImpl adminLogService = new AdminLogServiceImpl(Lmapper);
+        AdminOperationLogServiceImpl adminOperationLogService = new AdminOperationLogServiceImpl(AOmapper);
         String url = request.getRequestURL().toString();
         String substring = url.substring(url.lastIndexOf("/"), url.lastIndexOf(".admin"));
         if ("/findAll".equals(substring)) {
             System.out.println("findAll");
+            Admin admin = (Admin)httpSession.getAttribute("admin");
+            System.out.println(admin.getJurisdiction());
+            if(admin.getJurisdiction()!=0){
+                response.sendRedirect("error1.jsp");
+                return;
+            }
             List<Admin> admins = adminService.findAll();
             request.setAttribute("admins", admins);
             request.getRequestDispatcher("admin-list.jsp").forward(request, response);
 
+        } else if ("/loginLog".equals(substring)) {
+            System.out.println("Administrator-login-log");
+
+            Admin admin = (Admin)httpSession.getAttribute("admin");
+            System.out.println(admin.getJurisdiction());
+            if(admin.getJurisdiction()!=0){
+                response.sendRedirect("error1.jsp");
+                return;
+            }
+            List<AdminLog> adminLogs = adminLogService.findAll();
+            request.setAttribute("adminLogs", adminLogs);
+            request.getRequestDispatcher("admin-login-log.jsp").forward(request, response);
+        } else if ("/adminOperationLog".equals(substring)) {
+            Admin admin = (Admin)httpSession.getAttribute("admin");
+            System.out.println(admin.getJurisdiction());
+            if(admin.getJurisdiction()!=0){
+                response.sendRedirect("error1.jsp");
+                return;
+            }
+            System.out.println("Administrator-operation-log");
+            List<AdminOperationLog> adminOperationLogs = adminOperationLogService.findAll();
+            request.setAttribute("adminOperationLogs", adminOperationLogs);
+            request.getRequestDispatcher("admin-operation-log.jsp").forward(request, response);
         } else if ("/add".equals(substring)) {
             System.out.println("add");
             Admin admin = new Admin();
@@ -101,9 +140,11 @@ public class AdminServlet extends HttpServlet {
             }
             Admin admin = adminService.logIn(aname, apwd);
             if (admin != null) {
-                HttpSession httpSession = request.getSession();
                 httpSession.setAttribute("admin", admin);
                 response.sendRedirect(request.getContextPath() + "/index.jsp");
+                AdminLog adminLog = new AdminLog(admin.getId(), admin.getAName(), "登陆", admin.getJurisdiction());
+                adminLogService.add(adminLog);
+                session.commit();
                 System.out.println("登陆成功");
             } else {
                 request.setAttribute("msg", "用户名或密码错误");
@@ -111,6 +152,11 @@ public class AdminServlet extends HttpServlet {
 //                response.sendRedirect("/servletTest03_war/login.jsp");
             }
         } else if ("/logout".equals(substring)) {
+            int id = Integer.parseInt(request.getParameter("id"));
+            List<Admin> admin = adminService.findById(id);
+            AdminLog adminLog = new AdminLog(id, admin.get(0).getAName(), "退出", admin.get(0).getJurisdiction());
+            adminLogService.add(adminLog);
+            session.commit();
             request.getSession().invalidate();
             response.sendRedirect(request.getContextPath() + "/login.jsp");
         } else if ("/reset".equals(substring)) {

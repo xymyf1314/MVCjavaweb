@@ -6,7 +6,7 @@
   
   <head>
     <meta charset="UTF-8">
-    <title>欢迎页面-X-admin2.1</title>
+    <title>管理员登录日志</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
@@ -56,22 +56,22 @@
             </th>
             <th>ID</th>
             <th>管理员用户名</th>
-            <th>密码</th>
-            <th>权限</th>
+            <th>操作</th>
+            <th>时间</th>
             <th>操作</th>
         </thead>
         <tbody>
-        <c:forEach  items="${admins}" var="admin">
+        <c:forEach  items="${adminLogs}" var="adminLog">
           <tr>
             <td>
               <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i class="layui-icon">&#xe605;</i></div>
             </td>
-            <td class="aid">${admin.id}</td>
-            <td>${admin.AName}</td>
-            <td>${admin.APwd}</td>
-            <td>${admin.jurisdiction}</td>
+            <td class="aid">${adminLog.id}</td>
+            <td>${adminLog.AName}</td>
+            <td>${adminLog.operation}</td>
+            <td>${adminLog.operationTime}</td>
             <td>
-              <a title="编辑"  onclick="x_admin_show(this,'<%=request.getContextPath()%>/load.admin?id=${admin.id}')" href="javascript:;">
+              <a title="编辑"  onclick="x_admin_show(this,'<%=request.getContextPath()%>/load.admin?id=${adminLog.id}')" href="javascript:;">
                 <i class="layui-icon">&#xe642;</i>
               </a>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
