@@ -15,5 +15,9 @@ public interface UserMapper {
 
     boolean update(User user);
 
+    boolean rollback(User user);
+
+    boolean addrollback(User user);
+
     boolean del(int id);
 }

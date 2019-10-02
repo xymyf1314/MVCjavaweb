@@ -19,7 +19,7 @@
 <body class="login-bg">
     <% String msg = (String)request.getAttribute("msg");%>
     <div class="login layui-anim layui-anim-up">
-        <div class="message">x-admin2.0-管理登录</div>
+        <div class="message">网上商城后台管理</div>
         <div id="darkbannerwrap">
         </div>
         <span style="color: red;font-size: 18px" ><%=msg==null?"":msg%></span>

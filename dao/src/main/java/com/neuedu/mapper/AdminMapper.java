@@ -10,7 +10,7 @@ public interface AdminMapper {
 
     List<Admin> findById(int id);
 
-    Admin findByName(String aname);
+    Admin findByName(String aName);
 
     boolean add(Admin admin);
 

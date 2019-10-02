@@ -33,9 +33,9 @@ public class AdminServiceImpl implements IAdminService {
     }
 
     @Override
-    public Admin findByName(String aname) {
+    public Admin findByName(String aName) {
         System.out.println("通过name查找");
-        return adminMapper.findByName(aname);
+        return adminMapper.findByName(aName);
     }
 
     @Override
@@ -67,6 +67,7 @@ public class AdminServiceImpl implements IAdminService {
     public Admin logIn(String aname, String apwd) {
         System.out.println("服务层登陆事务");
         Admin admin = this.findByName(aname);
+        System.out.println(admin);
         if (admin != null) {
             if (admin.getAPwd().equals(ServletUtil.md5(apwd))) {
                 return admin;

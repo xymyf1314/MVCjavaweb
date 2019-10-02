@@ -16,7 +16,7 @@
                operation_time
         from t_admin_operation_log
     </select>
-    <select id="findById" resultMap="selectMap">
+    <select id="findByIdAndOperationTime" parameterType="AdminOperationLog" resultMap="selectMap">
         select id,
                aname,
                operation,
@@ -25,9 +25,10 @@
                user_password,
                user_phone,
                user_address,
-               user_register_date
+               user_register_date,
+               operation_time
         from t_admin_operation_log
-        where id = #{id}
+        where id = #{id} and operation_time = #{operationTime}
     </select>
     <select id="findByName" resultMap="selectMap" parameterType="String">
         select id,
@@ -56,8 +57,9 @@
         <result property="operationTime" column="operation_time"/>
     </resultMap>
     <insert id="add" parameterMap="insert">
-        insert into t_admin_operation_log(id,aname,operation,uid,user_name,user_password,user_phone,user_address,user_register_date)
-        values (#{id}, #{aName}, #{operation},#{uid},#{userName}, #{userPassword}, #{userPhone}, #{userAddress},
+        insert into t_admin_operation_log(id, aname, operation, uid, user_name, user_password, user_phone, user_address,
+                                          user_register_date)
+        values (#{id}, #{aName}, #{operation}, #{uid}, #{userName}, #{userPassword}, #{userPhone}, #{userAddress},
                 #{userRegisterDate})
     </insert>
     <!--    <update id="update" parameterMap="insert">-->

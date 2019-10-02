@@ -56,6 +56,13 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    public boolean rollback(User user) {
+        System.out.println("回滚修改的事务");
+        System.out.println(user);
+        return userMapper.rollback(user);
+    }
+
+    @Override
     public boolean del(int id) {
         System.out.println("删除的事务");
         boolean del = userMapper.del(id);

@@ -22,7 +22,7 @@
         insert into t_admin values (null,#{aName},md5(#{aPwd}),1)
     </insert>
     <update id="update" parameterMap="insert">
-        update t_admin set aname=#{aName},apwd=#{aPwd} where id=#{id}
+        update t_admin set aname=#{aName},apwd=md5(#{aPwd}) where id=#{id}
     </update>
     <parameterMap id="insert" type="Admin">
         <parameter property="id" resultMap="selectMap"/>

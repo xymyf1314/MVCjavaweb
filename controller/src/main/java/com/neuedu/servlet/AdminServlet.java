@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -48,14 +49,14 @@ public class AdminServlet extends HttpServlet {
         AdminServiceImpl adminService = new AdminServiceImpl(mapper);
         UserServiceImpl userService = new UserServiceImpl(uMapper);
         AdminLogServiceImpl adminLogService = new AdminLogServiceImpl(Lmapper);
-        AdminOperationLogServiceImpl adminOperationLogService = new AdminOperationLogServiceImpl(AOmapper);
+        AdminOperationLogServiceImpl adminOperationLogService = new AdminOperationLogServiceImpl(AOmapper,uMapper);
         String url = request.getRequestURL().toString();
         String substring = url.substring(url.lastIndexOf("/"), url.lastIndexOf(".admin"));
         if ("/findAll".equals(substring)) {
             System.out.println("findAll");
-            Admin admin = (Admin)httpSession.getAttribute("admin");
+            Admin admin = (Admin) httpSession.getAttribute("admin");
             System.out.println(admin.getJurisdiction());
-            if(admin.getJurisdiction()!=0){
+            if (admin.getJurisdiction() != 0) {
                 response.sendRedirect("error1.jsp");
                 return;
             }
@@ -66,9 +67,9 @@ public class AdminServlet extends HttpServlet {
         } else if ("/loginLog".equals(substring)) {
             System.out.println("Administrator-login-log");
 
-            Admin admin = (Admin)httpSession.getAttribute("admin");
+            Admin admin = (Admin) httpSession.getAttribute("admin");
             System.out.println(admin.getJurisdiction());
-            if(admin.getJurisdiction()!=0){
+            if (admin.getJurisdiction() != 0) {
                 response.sendRedirect("error1.jsp");
                 return;
             }
@@ -76,9 +77,9 @@ public class AdminServlet extends HttpServlet {
             request.setAttribute("adminLogs", adminLogs);
             request.getRequestDispatcher("admin-login-log.jsp").forward(request, response);
         } else if ("/adminOperationLog".equals(substring)) {
-            Admin admin = (Admin)httpSession.getAttribute("admin");
+            Admin admin = (Admin) httpSession.getAttribute("admin");
             System.out.println(admin.getJurisdiction());
-            if(admin.getJurisdiction()!=0){
+            if (admin.getJurisdiction() != 0) {
                 response.sendRedirect("error1.jsp");
                 return;
             }
@@ -86,6 +87,13 @@ public class AdminServlet extends HttpServlet {
             List<AdminOperationLog> adminOperationLogs = adminOperationLogService.findAll();
             request.setAttribute("adminOperationLogs", adminOperationLogs);
             request.getRequestDispatcher("admin-operation-log.jsp").forward(request, response);
+        } else if ("/rollback".equals(substring)) {
+            System.out.println("rollback");
+            int id = Integer.parseInt(request.getParameter("aid"));
+            Timestamp ts = new Timestamp(System.currentTimeMillis());
+            ts = Timestamp.valueOf(request.getParameter("operationTime"));
+            boolean rollback = adminOperationLogService.rollback(id, ts);
+            session.commit();
         } else if ("/add".equals(substring)) {
             System.out.println("add");
             Admin admin = new Admin();

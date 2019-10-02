@@ -4,17 +4,21 @@ import com.neuedu.entity.Admin;
 import com.neuedu.entity.AdminOperationLog;
 import com.neuedu.entity.User;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public interface IAdminOperationLogService {
     List<AdminOperationLog> findAll();
 
-//    List<Admin> findById(int id);
+    AdminOperationLog findByIdAndOperationTime(AdminOperationLog adminOperationLog);
+
+    //    List<Admin> findById(int id);
 //
 //    Admin findByName(String aname);
 //
-    boolean add(Admin admin, User user,String operation);
-//
+    boolean add(Admin admin, User user, String operation);
+
+    boolean rollback(int id,Timestamp operationTime);
 //    boolean update(Admin admin);
 //
 //    boolean del(int id);

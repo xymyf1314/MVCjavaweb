@@ -27,8 +27,14 @@
     <insert id="add" parameterType="User">
         insert into t_user(user_name,user_password,user_phone,user_address) values (#{userName},md5(#{userPassword}),#{userPhone},#{userAddress})
     </insert>
+    <insert id="addrollback" parameterType="User">
+        insert into t_user values (#{id},#{userName},#{userPassword},#{userPhone},#{userAddress}#{userRegisterDate})
+    </insert>
     <update id="update" parameterType="User">
         update t_user set user_name=#{userName},user_password=md5(#{userPassword}),user_phone=#{userPhone},user_address=#{userAddress} where id=#{id}
+    </update>
+    <update id="rollback" parameterType="User">
+        update t_user set user_name=#{userName},user_password=#{userPassword},user_phone=#{userPhone},user_address=#{userAddress},user_register_date=#{userRegisterDate} where id=#{id}
     </update>
 
     <delete id="del" parameterType="int">

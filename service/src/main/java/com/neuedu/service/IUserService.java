@@ -16,6 +16,8 @@ public interface IUserService {
 
     boolean update(User user);
 
+    boolean rollback(User user);
+
     boolean del(int id);
 
     public User logIn(String userName, String userPassword);

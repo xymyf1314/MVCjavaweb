@@ -81,13 +81,13 @@
             <td>${adminOperationLog.userPhone}</td>
             <td>${adminOperationLog.userAddress}</td>
             <td>${adminOperationLog.userRegisterDate}</td>
-            <td>${adminOperationLog.operationTime}</td>
+            <td class="operationTime">${adminOperationLog.operationTime}</td>
             <td>
-              <a title="编辑"  onclick="x_admin_show(this,'<%=request.getContextPath()%>/load.admin?id=${adminLog.id}')" href="javascript:;">
-                <i class="layui-icon">&#xe642;</i>
-              </a>
+<%--              <a title="编辑"  onclick="x_admin_show(this,'<%=request.getContextPath()%>/load.admin?id=${adminLog.id}')" href="javascript:;">--%>
+<%--                <i class="layui-icon">&#xe642;</i>--%>
+<%--              </a>--%>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">
+              <a title="回滚" onclick="member_del(this,'${adminOperationLog.operationTime}')" href="javascript:;">
                 <i class="layui-icon">&#xe640;</i>
               </a>
             </td>
@@ -126,22 +126,24 @@
 
       /*用户-删除*/
       function member_del(obj,id){
-          layer.confirm('确认要删除吗？',function(index){
+          layer.confirm('确认要回滚吗？',function(index){
               var children = $(obj).parents("tr").children('.aid').text();
+              var operationTime = $(obj).parents("tr").children('.operationTime').text();
               console.log(children);
               console.log("___________");
               //发异步删除数据
               $.ajax({
-                  url: '<%=request.getContextPath()%>/del.admin',
+                  url: "<%=request.getContextPath()%>/rollback.admin",
                   data: {
-                      "aid" : children
+                      "aid" : children,
+                      "operationTime" : operationTime
                   },
                   traditional: true,
                   type: "POST"
 
               });
               $(obj).parents("tr").remove();
-              layer.msg('已删除!',{icon:1,time:1000});
+              layer.msg('已回滚!',{icon:1,time:1000});
           });
       }
 

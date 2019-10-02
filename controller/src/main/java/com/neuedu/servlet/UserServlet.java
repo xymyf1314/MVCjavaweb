@@ -40,7 +40,7 @@ public class UserServlet extends HttpServlet {
         AdminOperationLogMapper adminOperationLogMapper = session.getMapper(AdminOperationLogMapper.class);
         // 调用服务层
         UserServiceImpl userService = new UserServiceImpl(mapper);
-        AdminOperationLogServiceImpl adminOperationLogService = new AdminOperationLogServiceImpl(adminOperationLogMapper);
+        AdminOperationLogServiceImpl adminOperationLogService = new AdminOperationLogServiceImpl(adminOperationLogMapper,mapper);
         String method = request.getParameter("method");
         if ("findAll".equals(method)) {
             System.out.println("findAll");

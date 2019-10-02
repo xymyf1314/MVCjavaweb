@@ -8,7 +8,7 @@ import java.util.List;
 public interface AdminOperationLogMapper {
     List<AdminOperationLog> findAll();
 
-//    List<AdminOperationLog> findById(int id);
+    AdminOperationLog findByIdAndOperationTime(AdminOperationLog adminOperationLog);
 //
 //    AdminLog findByName(String aName);
 //
