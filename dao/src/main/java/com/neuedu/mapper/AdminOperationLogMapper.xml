@@ -10,9 +10,11 @@
                uid,
                user_name,
                user_password,
+               user_grade,
                user_phone,
                user_address,
                user_register_date,
+               user_disable,
                operation_time
         from t_admin_operation_log
     </select>
@@ -23,9 +25,11 @@
                uid,
                user_name,
                user_password,
+               user_grade,
                user_phone,
                user_address,
                user_register_date,
+               user_disable,
                operation_time
         from t_admin_operation_log
         where id = #{id} and operation_time = #{operationTime}
@@ -37,9 +41,11 @@
                uid,
                user_name,
                user_password,
+               user_grade,
                user_phone,
                user_address,
                user_register_date,
+               user_disable,
                operation_time
         from t_admin_operation_log
         where aname = #{aName}
@@ -51,16 +57,18 @@
         <result property="uid" column="uid"/>
         <result property="userName" column="user_name"/>
         <result property="userPassword" column="user_password"/>
+        <result property="userGrade" column="user_grade"/>
         <result property="userPhone" column="user_phone"/>
         <result property="userAddress" column="user_address"/>
         <result property="userRegisterDate" column="user_register_date"/>
+        <result property="userDisable" column="user_disable"/>
         <result property="operationTime" column="operation_time"/>
     </resultMap>
     <insert id="add" parameterMap="insert">
-        insert into t_admin_operation_log(id, aname, operation, uid, user_name, user_password, user_phone, user_address,
-                                          user_register_date)
-        values (#{id}, #{aName}, #{operation}, #{uid}, #{userName}, #{userPassword}, #{userPhone}, #{userAddress},
-                #{userRegisterDate})
+        insert into t_admin_operation_log(id, aname, operation, uid, user_name, user_password,user_grade,user_phone, user_address,
+                                          user_register_date,user_disable)
+        values (#{id}, #{aName}, #{operation}, #{uid}, #{userName}, #{userPassword},#{userGrade}, #{userPhone}, #{userAddress},
+                #{userRegisterDate},#{userDisable})
     </insert>
     <!--    <update id="update" parameterMap="insert">-->
     <!--        update t_admin_log set aname=#{aName},apwd=#{aPwd} where id=#{id}-->
@@ -72,9 +80,11 @@
         <parameter property="uid" resultMap="selectMap"/>
         <parameter property="userName" resultMap="selectMap"/>
         <parameter property="userPassword" resultMap="selectMap"/>
+        <parameter property="userGrade" resultMap="selectMap"/>
         <parameter property="userPhone" resultMap="selectMap"/>
         <parameter property="userAddress" resultMap="selectMap"/>
         <parameter property="userRegisterDate" resultMap="selectMap"/>
+        <parameter property="userDisable" resultMap="selectMap"/>
         <parameter property="operationTime" resultMap="selectMap"/>
     </parameterMap>
     <delete id="del" parameterType="int">

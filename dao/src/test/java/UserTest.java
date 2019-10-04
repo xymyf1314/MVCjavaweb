@@ -11,7 +11,7 @@ public class UserTest {
         SqlSession sqlSession = MyBatisUtil.getSqlSession("mybatis-config.xml");
         UserMapper mapper = sqlSession.getMapper(UserMapper.class);
         Timestamp timestamp = Timestamp.valueOf("2019-10-02 11:44:47.0");
-        mapper.rollback(new User(5,"222","4a9bd19b3b8676199592a346051f950c","2","2",timestamp));
+        mapper.rollback(new User(5,"222","4a9bd19b3b8676199592a346051f950c",0,"2","2",timestamp,0));
         List<User> all = mapper.findAll();
         for (User user : all) {
             System.out.println(user);

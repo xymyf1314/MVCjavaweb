@@ -40,7 +40,7 @@ public class AdminOperationLogServiceImpl implements IAdminOperationLogService {
     @Override
     public boolean add(Admin admin, User user, String operation) {
         System.out.println("添加管理员操作日志");
-        AdminOperationLog adminOperationLog = new AdminOperationLog(admin.getId(), admin.getAName(), operation, user.getId(), user.getUserName(), user.getUserPassword(), user.getUserPhone(), user.getUserAddress(), user.getUserRegisterDate());
+        AdminOperationLog adminOperationLog = new AdminOperationLog(admin.getId(), admin.getAName(), operation, user.getId(), user.getUserName(), user.getUserPassword(),user.getUserGrade(),user.getUserPhone(), user.getUserAddress(), user.getUserRegisterDate(),user.getDisable());
         System.out.println(adminOperationLog);
         return adminOperationLogMapper.add(adminOperationLog);
     }
@@ -59,7 +59,7 @@ public class AdminOperationLogServiceImpl implements IAdminOperationLogService {
         System.out.println(operation);
         boolean flag = false;
         if ("修改".equals(operation)) {
-            User user = new User(adminOperationLog.getUid(), adminOperationLog.getUserName(), adminOperationLog.getUserPassword(), adminOperationLog.getUserPhone(), adminOperationLog.getUserAddress(), adminOperationLog.getOperationTime());
+            User user = new User(adminOperationLog.getUid(), adminOperationLog.getUserName(), adminOperationLog.getUserPassword(),adminOperationLog.getUserGrade(), adminOperationLog.getUserPhone(), adminOperationLog.getUserAddress(), adminOperationLog.getOperationTime(),adminOperationLog.getUserDisable());
             System.out.println(user);
             UserServiceImpl userService = new UserServiceImpl(userMapper);
             userService.
@@ -67,7 +67,7 @@ public class AdminOperationLogServiceImpl implements IAdminOperationLogService {
         } else if ("增加".equals(operation)) {
             flag = userMapper.del(adminOperationLog.getUid());
         } else if ("删除".equals(operation)) {
-            flag = userMapper.add(new User(adminOperationLog.getUid(), adminOperationLog.getUserName(), adminOperationLog.getUserPassword(), adminOperationLog.getUserPhone(), adminOperationLog.getUserAddress(), adminOperationLog.getOperationTime()));
+            flag = userMapper.add(new User(adminOperationLog.getUid(), adminOperationLog.getUserName(), adminOperationLog.getUserPassword(),adminOperationLog.getUserGrade(), adminOperationLog.getUserPhone(), adminOperationLog.getUserAddress(), adminOperationLog.getOperationTime(),adminOperationLog.getUserDisable()));
         }
         return flag;
     }

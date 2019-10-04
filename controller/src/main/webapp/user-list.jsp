@@ -59,9 +59,11 @@
             <th>ID</th>
             <th>用户名</th>
             <th>密码</th>
+            <th>会员等级</th>
             <th>手机</th>
             <th>地址</th>
             <th>加入时间</th>
+            <th>账号状态</th>
             <th>操作</th>
         </tr>
         </thead>
@@ -75,23 +77,38 @@
                 <td class="uid">${user.id}</td>
                 <td>${user.userName}</td>
                 <td>${user.userPassword}</td>
+                <td>${user.userGrade}</td>
                 <td>${user.userPhone}</td>
                 <td>${user.userAddress}</td>
                 <td>${user.userRegisterDate}</td>
-                <td>
+                <td id="frost">
+                    <c:if test="${user.disable==1}">
+                        冻结
+                    </c:if>
+                    <c:if test="${user.disable==0}">
+                        正常
+                    </c:if>
+                </td>
+                <td style="display: flex;justify-content: start;align-content: center;border-bottom: none;border-left: none">
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <a title="编辑"
+                    <a style="display: flex;" title="编辑"
                        onclick="x_admin_show(this,'<%=request.getContextPath()%>/userServlet?method=load&id=${user.id}')"
                        href="javascript:;">
                         <i class="layui-icon">&#xe642;</i>
                     </a>
-                    <a title="重置"
-<%--                       onclick="x_admin_show(this,'<%=request.getContextPath()%>/reset.admin?method=reset&id=${user.id}')"--%>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a style="display: flex;" title="冻结/解冻" onclick="member_frost(this,'${user.id}')" href="javascript:;">
+                        <i class="layui-icon">&#xe639;</i>
+                    </a>
+
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a style="display: flex" title="重置"
+                        <%--                       onclick="x_admin_show(this,'<%=request.getContextPath()%>/reset.admin?method=reset&id=${user.id}')"--%>
                        href="<%=request.getContextPath()%>/reset.admin?id=${user.id}">
-                        <i class="layui-icon">&#xe642;</i>
+                        <i class="layui-icon">&#xe643;</i>
                     </a>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <a title="删除" onclick="member_del(this,'${user.id}')" href="javascript:;">
+                    <a style="display: flex;" title="删除" onclick="member_del(this,'${user.id}')" href="javascript:;">
                         <i class="layui-icon">&#xe640;</i>
                     </a>
                 </td>
@@ -129,7 +146,7 @@
 
     /*用户-删除*/
     function member_del(obj, id) {
-        layer.confirm('确认要删除吗？', function (index) {
+        layer.confirm('确认要冻结/解冻吗？', function (index) {
             var children = $(obj).parents("tr").children('.uid').text();
             //发异步删除数据
             $.ajax({
@@ -145,6 +162,20 @@
 
             $(obj).parents("tr").remove();
             layer.msg('已删除!', {icon: 1, time: 1000});
+        });
+    }    /*用户-删除*/
+    function member_frost(obj, id) {
+
+        layer.confirm('确认要冻结/解冻吗？', function (index) {
+            var frost = $(obj).parents("tr").children('#frost').text();
+            //发异步删除数据
+            $.ajax({
+                url: '<%=request.getContextPath()%>/frost.admin?id=' + id,
+                traditional: true,
+                type: "POST"
+
+            });
+                layer.msg('已冻结/解冻!', {icon: 1, time: 1000});
         });
     }
 

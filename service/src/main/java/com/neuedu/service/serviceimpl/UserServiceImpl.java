@@ -4,6 +4,7 @@ import com.neuedu.entity.User;
 import com.neuedu.mapper.UserMapper;
 import com.neuedu.service.IUserService;
 import com.neuedu.util.ServletUtil;
+
 import java.util.List;
 
 /**
@@ -58,8 +59,23 @@ public class UserServiceImpl implements IUserService {
     @Override
     public boolean rollback(User user) {
         System.out.println("回滚修改的事务");
-        System.out.println(user);
         return userMapper.rollback(user);
+    }
+
+    @Override
+    public boolean frost(User user) {
+        System.out.println("冻结解冻的业务");
+        boolean flag = false;
+        if (user.getDisable() == 0) {
+            user.setDisable(1);
+            System.out.println("已冻结");
+            flag = userMapper.frost(user);
+        } else {
+            user.setDisable(0);
+            flag = userMapper.frost(user);
+            System.out.println("已解冻");
+        }
+        return flag;
     }
 
     @Override

@@ -18,6 +18,8 @@ public interface IUserService {
 
     boolean rollback(User user);
 
+    boolean frost(User user);
+
     boolean del(int id);
 
     public User logIn(String userName, String userPassword);

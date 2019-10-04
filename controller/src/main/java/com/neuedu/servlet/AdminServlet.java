@@ -49,9 +49,10 @@ public class AdminServlet extends HttpServlet {
         AdminServiceImpl adminService = new AdminServiceImpl(mapper);
         UserServiceImpl userService = new UserServiceImpl(uMapper);
         AdminLogServiceImpl adminLogService = new AdminLogServiceImpl(Lmapper);
-        AdminOperationLogServiceImpl adminOperationLogService = new AdminOperationLogServiceImpl(AOmapper,uMapper);
+        AdminOperationLogServiceImpl adminOperationLogService = new AdminOperationLogServiceImpl(AOmapper, uMapper);
         String url = request.getRequestURL().toString();
         String substring = url.substring(url.lastIndexOf("/"), url.lastIndexOf(".admin"));
+        // 查找全部
         if ("/findAll".equals(substring)) {
             System.out.println("findAll");
             Admin admin = (Admin) httpSession.getAttribute("admin");
@@ -63,7 +64,12 @@ public class AdminServlet extends HttpServlet {
             List<Admin> admins = adminService.findAll();
             request.setAttribute("admins", admins);
             request.getRequestDispatcher("admin-list.jsp").forward(request, response);
-
+            // 登陆
+        } else if ("/frost".equals(substring)) {
+            int id = Integer.parseInt(request.getParameter("id"));
+            User user = userService.findById(id);
+            userService.frost(user);
+            session.commit();
         } else if ("/loginLog".equals(substring)) {
             System.out.println("Administrator-login-log");
 
@@ -76,17 +82,21 @@ public class AdminServlet extends HttpServlet {
             List<AdminLog> adminLogs = adminLogService.findAll();
             request.setAttribute("adminLogs", adminLogs);
             request.getRequestDispatcher("admin-login-log.jsp").forward(request, response);
+            // 查看管理员操作日志
         } else if ("/adminOperationLog".equals(substring)) {
             Admin admin = (Admin) httpSession.getAttribute("admin");
-            System.out.println(admin.getJurisdiction());
             if (admin.getJurisdiction() != 0) {
                 response.sendRedirect("error1.jsp");
                 return;
             }
             System.out.println("Administrator-operation-log");
             List<AdminOperationLog> adminOperationLogs = adminOperationLogService.findAll();
+            for (AdminOperationLog adminOperationLog : adminOperationLogs) {
+                System.out.println(adminOperationLog);
+            }
             request.setAttribute("adminOperationLogs", adminOperationLogs);
             request.getRequestDispatcher("admin-operation-log.jsp").forward(request, response);
+            // 管理员回滚日志
         } else if ("/rollback".equals(substring)) {
             System.out.println("rollback");
             int id = Integer.parseInt(request.getParameter("aid"));
@@ -94,6 +104,7 @@ public class AdminServlet extends HttpServlet {
             ts = Timestamp.valueOf(request.getParameter("operationTime"));
             boolean rollback = adminOperationLogService.rollback(id, ts);
             session.commit();
+            // 添加用户
         } else if ("/add".equals(substring)) {
             System.out.println("add");
             Admin admin = new Admin();
@@ -115,6 +126,7 @@ public class AdminServlet extends HttpServlet {
             request.setAttribute("admin", admin);
             System.out.println(admin);
             request.getRequestDispatcher("admin-edit2.jsp").forward(request, response);
+            // 修改用户信息
         } else if ("/update".equals(substring)) {
             System.out.println("update");
             Admin admin = new Admin();
@@ -126,6 +138,7 @@ public class AdminServlet extends HttpServlet {
             System.out.println(update);
             session.commit();
             response.sendRedirect("findAll.admin");
+            // 删除用户
         } else if ("/del".equals(substring)) {
             System.out.println("del");
             String id = request.getParameter("aid");
@@ -159,6 +172,7 @@ public class AdminServlet extends HttpServlet {
                 request.getRequestDispatcher("login.jsp").forward(request, response);
 //                response.sendRedirect("/servletTest03_war/login.jsp");
             }
+            // 退出的方法
         } else if ("/logout".equals(substring)) {
             int id = Integer.parseInt(request.getParameter("id"));
             List<Admin> admin = adminService.findById(id);
@@ -167,6 +181,7 @@ public class AdminServlet extends HttpServlet {
             session.commit();
             request.getSession().invalidate();
             response.sendRedirect(request.getContextPath() + "/login.jsp");
+            // 重置密码的方法
         } else if ("/reset".equals(substring)) {
             System.out.println("reset");
             int id = Integer.parseInt(request.getParameter("id"));

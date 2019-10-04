@@ -3,38 +3,44 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.neuedu.mapper.UserMapper">
-    <sql id="basesql">select id,user_name,user_password,user_phone,user_address,user_register_date</sql>
+    <sql id="baseSQL">select id,user_name,user_password,user_grade,user_phone,user_address,user_register_date,disable</sql>
     <select id="findAll" resultMap="res">
-        <include refid="basesql"/>
+        <include refid="baseSQL"/>
         from t_user
     </select>
     <select id="findById" resultMap="res">
-    select id,user_name,user_password,user_phone,user_address,user_register_date from t_user where id=#{id}
+    select id,user_name,user_password,user_grade,user_phone,user_address,user_register_date,disable from t_user where id=#{id}
     </select>
     <select id="findByName" resultMap="res" parameterType="String">
-    select id,user_name,user_password,user_phone,user_address,user_register_date from t_user where user_name=#{userName}
+    select id,user_name,user_password,user_grade,user_phone,user_address,user_register_date,disable from t_user where user_name=#{userName}
     </select>
     <resultMap id="res" type="User">
         <id property="id" column="id" javaType="Integer"/>
         <result property="userName" column="user_name" javaType="String"/>
         <result property="userPassword" column="user_password" javaType="String"/>
+        <result property="userGrade" column="user_grade" javaType="Integer"/>
         <result property="userPhone" column="user_phone" javaType="String"/>
         <result property="userAddress" column="user_address" javaType="String"/>
         <result property="userRegisterDate" column="user_register_date"/>
+        <result property="disable" column="disable" javaType="integer"/>
     </resultMap>
 
 
     <insert id="add" parameterType="User">
-        insert into t_user(user_name,user_password,user_phone,user_address) values (#{userName},md5(#{userPassword}),#{userPhone},#{userAddress})
+        insert into t_user(user_name,user_password,user_grade,user_phone,user_address) values (#{userName},md5(#{userPassword}),0,#{userPhone},#{userAddress})
     </insert>
     <insert id="addrollback" parameterType="User">
-        insert into t_user values (#{id},#{userName},#{userPassword},#{userPhone},#{userAddress}#{userRegisterDate})
+        insert into t_user values (#{id},#{userName},#{userPassword},#{userGrade},#{userPhone},#{userAddress},#{userRegisterDate},#{disable})
     </insert>
     <update id="update" parameterType="User">
         update t_user set user_name=#{userName},user_password=md5(#{userPassword}),user_phone=#{userPhone},user_address=#{userAddress} where id=#{id}
     </update>
+    <update id="frost" parameterType="User">
+        update t_user set disable=#{disable} where id=#{id}
+    </update>
+
     <update id="rollback" parameterType="User">
-        update t_user set user_name=#{userName},user_password=#{userPassword},user_phone=#{userPhone},user_address=#{userAddress},user_register_date=#{userRegisterDate} where id=#{id}
+        update t_user set user_name=#{userName},user_password=#{userPassword},user_grade=#{userGrade},user_phone=#{userPhone},user_address=#{userAddress},user_register_date=#{userRegisterDate},disable=#{disable} where id=#{id}
     </update>
 
     <delete id="del" parameterType="int">
