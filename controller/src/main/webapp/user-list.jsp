@@ -59,7 +59,7 @@
             <th>ID</th>
             <th>用户名</th>
             <th>密码</th>
-            <th>会员等级</th>
+            <th>是否会员</th>
             <th>手机</th>
             <th>地址</th>
             <th>加入时间</th>
@@ -77,7 +77,10 @@
                 <td class="uid">${user.id}</td>
                 <td>${user.userName}</td>
                 <td>${user.userPassword}</td>
-                <td>${user.userGrade}</td>
+                <td>
+                    <c:if test="${user.userGrade==0}">否</c:if>
+                    <c:if test="${user.userGrade==1}">是</c:if>
+                </td>
                 <td>${user.userPhone}</td>
                 <td>${user.userAddress}</td>
                 <td>${user.userRegisterDate}</td>

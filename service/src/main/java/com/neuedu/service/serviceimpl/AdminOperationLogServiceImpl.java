@@ -72,4 +72,9 @@ public class AdminOperationLogServiceImpl implements IAdminOperationLogService {
         return flag;
     }
 
+    @Override
+    public boolean del(AdminOperationLog adminOperationLog) {
+        return adminOperationLogMapper.del(adminOperationLog);
+    }
+
 }

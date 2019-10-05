@@ -21,7 +21,7 @@ public interface IAdminOperationLogService {
     boolean rollback(int id,Timestamp operationTime);
 //    boolean update(Admin admin);
 //
-//    boolean del(int id);
+    boolean del(AdminOperationLog adminOperationLog);
 //
 //    Admin logIn(String aname, String apwd);
 

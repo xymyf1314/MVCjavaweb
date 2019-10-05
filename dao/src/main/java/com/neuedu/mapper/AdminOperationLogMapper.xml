@@ -87,10 +87,10 @@
         <parameter property="userDisable" resultMap="selectMap"/>
         <parameter property="operationTime" resultMap="selectMap"/>
     </parameterMap>
-    <delete id="del" parameterType="int">
+    <delete id="del" parameterType="AdminOperationLog">
         delete
         from t_admin_operation_log
-        where id = #{id}
+        where id = #{id} and operation_time=#{operationTime}
     </delete>
 
 </mapper>

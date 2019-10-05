@@ -16,5 +16,5 @@ public interface AdminOperationLogMapper {
 //
 //    boolean update(AdminOperationLog adminOperationLog);
 //
-//    boolean del(int id);
+    boolean del(AdminOperationLog adminOperationLog);
 }

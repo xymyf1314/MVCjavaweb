@@ -70,6 +70,7 @@ public class AdminServlet extends HttpServlet {
             User user = userService.findById(id);
             userService.frost(user);
             session.commit();
+            // 登录日志
         } else if ("/loginLog".equals(substring)) {
             System.out.println("Administrator-login-log");
 
@@ -96,13 +97,17 @@ public class AdminServlet extends HttpServlet {
             }
             request.setAttribute("adminOperationLogs", adminOperationLogs);
             request.getRequestDispatcher("admin-operation-log.jsp").forward(request, response);
-            // 管理员回滚日志
+            // 超级管理员的回滚操作
         } else if ("/rollback".equals(substring)) {
             System.out.println("rollback");
             int id = Integer.parseInt(request.getParameter("aid"));
             Timestamp ts = new Timestamp(System.currentTimeMillis());
             ts = Timestamp.valueOf(request.getParameter("operationTime"));
             boolean rollback = adminOperationLogService.rollback(id, ts);
+            AdminOperationLog adminOperationLog = new AdminOperationLog();
+            adminOperationLog.setId(id);
+            adminOperationLog.setOperationTime(ts);
+            adminOperationLogService.del(adminOperationLog);
             session.commit();
             // 添加用户
         } else if ("/add".equals(substring)) {
