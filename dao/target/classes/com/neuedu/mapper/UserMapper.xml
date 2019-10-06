@@ -4,10 +4,26 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.neuedu.mapper.UserMapper">
     <sql id="baseSQL">select id,user_name,user_password,user_grade,user_phone,user_address,user_register_date,disable</sql>
-    <select id="findAll" resultMap="res">
-        <include refid="baseSQL"/>
-        from t_user
+    <select id="findAll" resultMap="res2">
+       select t_user.id,user_name,user_password,user_grade,user_phone,user_address,user_register_date,disable,t_address.province,t_address.city,t_address.area
+       from t_user left join t_address on t_user.id=t_address.id
     </select>
+    <resultMap id="res2" type="User">
+        <id property="id" column="id" javaType="Integer"/>
+        <result property="userName" column="user_name" javaType="String"/>
+        <result property="userPassword" column="user_password" javaType="String"/>
+        <result property="userGrade" column="user_grade" javaType="Integer"/>
+        <result property="userPhone" column="user_phone" javaType="String"/>
+        <result property="userAddress" column="user_address" javaType="String"/>
+        <result property="userRegisterDate" column="user_register_date"/>
+        <result property="disable" column="disable" javaType="integer"/>
+        <collection property="userAddresses" ofType="UserAddress">
+            <result property="id" column="id"/>
+            <result property="province" column="province"/>
+            <result property="city" column="city"/>
+            <result property="area" column="area"/>
+        </collection>
+    </resultMap>
     <select id="findById" resultMap="res">
     select id,user_name,user_password,user_grade,user_phone,user_address,user_register_date,disable from t_user where id=#{id}
     </select>

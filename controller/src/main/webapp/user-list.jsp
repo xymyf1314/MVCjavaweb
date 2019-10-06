@@ -9,12 +9,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport"
           content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"/>
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
     <link rel="stylesheet" href="./css/font.css">
     <link rel="stylesheet" href="./css/xadmin.css">
     <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery3.2.1.js"></script>
     <script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
     <script type="text/javascript" src="./js/xadmin.js"></script>
     <script type="text/javascript" src="./js/cookie.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
     <!--[if lt IE 9]>
     <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
@@ -82,7 +85,20 @@
                     <c:if test="${user.userGrade==1}">是</c:if>
                 </td>
                 <td>${user.userPhone}</td>
-                <td>${user.userAddress}</td>
+                    <%--                <td>${user.userAddress}</td>--%>
+                <td>
+                    <div class="dropdown">
+                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                ${user.userAddress}
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                            <c:forEach items="${user.userAddresses}" var="useraddr">
+                            <li><a href="#">${useraddr.province}${useraddr.city}${useraddr.area}</a></li>
+                            </c:forEach>
+                        </ul>
+                    </div>
+                </td>
                 <td>${user.userRegisterDate}</td>
                 <td id="frost">
                     <c:if test="${user.disable==1}">
@@ -92,7 +108,7 @@
                         正常
                     </c:if>
                 </td>
-                <td style="display: flex;justify-content: start;align-content: center;border-bottom: none;border-left: none">
+                <td style="display: flex;justify-content: start;align-content: center;padding-top:30px;padding-bottom:25px;border-left: none">
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <a style="display: flex;" title="编辑"
                        onclick="x_admin_show(this,'<%=request.getContextPath()%>/userServlet?method=load&id=${user.id}')"
@@ -100,7 +116,8 @@
                         <i class="layui-icon">&#xe642;</i>
                     </a>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <a style="display: flex;" title="冻结/解冻" onclick="member_frost(this,'${user.id}')" href="javascript:;">
+                    <a style="display: flex;" title="冻结/解冻" onclick="member_frost(this,'${user.id}')"
+                       href="javascript:;">
                         <i class="layui-icon">&#xe639;</i>
                     </a>
 
@@ -178,7 +195,7 @@
                 type: "POST"
 
             });
-                layer.msg('已冻结/解冻!', {icon: 1, time: 1000});
+            layer.msg('已冻结/解冻!', {icon: 1, time: 1000});
         });
     }
 

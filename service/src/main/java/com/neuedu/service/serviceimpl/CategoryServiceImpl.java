@@ -12,10 +12,10 @@ import java.util.List;
  * @author: LinLuo
  * @create: 2019-09-16 16:05
  **/
-public class CategoryImpl implements ICategoryService {
+public class CategoryServiceImpl implements ICategoryService {
     CategoryMapper categoryMapper;
 
-    public CategoryImpl(CategoryMapper categoryMapper) {
+    public CategoryServiceImpl(CategoryMapper categoryMapper) {
         this.categoryMapper = categoryMapper;
     }
 

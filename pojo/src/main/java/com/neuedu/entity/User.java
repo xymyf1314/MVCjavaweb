@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -19,6 +20,18 @@ public class User implements Serializable {
     private String userAddress;
     private Timestamp userRegisterDate;
     private Integer disable;
+    private List<UserAddress> userAddresses;
+
+    public User(Integer id, String userName, String userPassword, Integer userGrade, String userPhone, String userAddress, Timestamp userRegisterDate, Integer disable) {
+        this.id = id;
+        this.userName = userName;
+        this.userPassword = userPassword;
+        this.userGrade = userGrade;
+        this.userPhone = userPhone;
+        this.userAddress = userAddress;
+        this.userRegisterDate = userRegisterDate;
+        this.disable = disable;
+    }
 
     public User(String userName, String userPassword, String userPhone, String userAddress) {
         this.userName = userName;

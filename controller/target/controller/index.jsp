@@ -1,4 +1,4 @@
-<%@include file="header.jsp"%>
+<%@include file="header.jsp" %>
 <%@page pageEncoding="utf-8" contentType="text/html;charset=utf-8" isELIgnored="false" %>
 <!DOCTYPE html>
 <html class="x-admin-sm">
@@ -48,7 +48,8 @@
             <a href="javascript:;">${admin.AName}</a>
             <dl class="layui-nav-child"> <!-- 二级菜单 -->
                 <dd><a onclick="x_admin_show('个人信息','http://www.baidu.com')">个人信息</a></dd>
-                <dd><a href="<%=request.getContextPath()%>/logout.admin?id=${admin.id}&aName=${admin.AName}">切换帐号</a></dd>
+                <dd><a href="<%=request.getContextPath()%>/logout.admin?id=${admin.id}&aName=${admin.AName}">切换帐号</a>
+                </dd>
                 <dd><a href="<%=request.getContextPath()%>/logout.admin?id=${admin.id}&aName=${admin.AName}">退出</a></dd>
             </dl>
         </li>
@@ -134,6 +135,12 @@
                         <a _href="order-list.html">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>订单列表</cite>
+                        </a>
+                    </li>
+                    <li>
+                        <a _href="productServlet?method=findToTree">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>类别列表</cite>
                         </a>
                     </li>
                 </ul>
