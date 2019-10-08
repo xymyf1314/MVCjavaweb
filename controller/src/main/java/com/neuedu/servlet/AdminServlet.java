@@ -14,6 +14,7 @@ import com.neuedu.service.serviceimpl.AdminServiceImpl;
 import com.neuedu.service.serviceimpl.UserServiceImpl;
 import com.neuedu.util.MyBatisUtil;
 import com.neuedu.util.ServletUtil;
+import com.neuedu.util.SlidingUtil;
 import org.apache.ibatis.session.SqlSession;
 
 import javax.servlet.ServletException;
@@ -23,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -154,6 +156,37 @@ public class AdminServlet extends HttpServlet {
             System.out.println(del);
             response.sendRedirect("findAll.admin");
             // 登陆的方法
+        } else if ("/login2".equals(substring)) {
+            System.out.println("login2");
+            String aname = request.getParameter("aname");
+            String apwd = request.getParameter("apwd");
+            Admin admin = adminService.logIn(aname, apwd);
+            if (admin != null) {
+                httpSession.setAttribute("admin", admin);
+                response.sendRedirect(request.getContextPath() + "/index.jsp");
+                AdminLog adminLog = new AdminLog(admin.getId(), admin.getAName(), "登陆", admin.getJurisdiction());
+                adminLogService.add(adminLog);
+                session.commit();
+                System.out.println("登陆成功");
+            } else {
+                request.setAttribute("msg", "用户名或密码错误");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+//                response.sendRedirect("/servletTest03_war/login.jsp");
+            }
+
+        } else if ("/yzm".equals(substring)) {
+            System.out.println("yzm");
+            String ticket = request.getParameter("ticket");
+            String randstr = request.getParameter("randstr");
+            System.out.println(ticket);
+            System.out.println(randstr);
+            String slid = SlidingUtil.slid(ticket, randstr);
+            System.out.println(slid);
+            int index = slid.indexOf("OK");
+            System.out.println(index);
+            PrintWriter out = response.getWriter();
+            out.print(slid);
+
         } else if ("/login".equals(substring)) {
             System.out.println("login================");
             String checkcode = (String) request.getSession().getAttribute("checkcode");
