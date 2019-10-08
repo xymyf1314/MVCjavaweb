@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neuedu.mapper.ProductMapper">
+    <select id="findAll" resultMap="selectMap">
+        #    和t_product 和 t_category 联查
+        select p.id,
+               p.product_name,
+               p.product_descr,
+               p.normalprice,
+               p.memberprice,
+               p.product_date,
+               p.product_categoryid,
+               p.product_imgpath,
+               t.id,
+               t.category_name,
+               t.category_description,
+               t.category_parent_id,
+               t.leaf,
+               t.grade
+        from t_product p
+                 join t_category t on p.product_categoryid = t.id
+    </select>
+
+    <resultMap id="selectMap" type="Product">
+        <result property="id" column="id"/>
+        <result property="productName" column="product_name"/>
+        <result property="productDescription" column="product_descr"/>
+        <result property="normalPrice" column="normalprice"/>
+        <result property="memberPrice" column="memberprice"/>
+        <result property="productDate" column="product_date"/>
+        <result property="productImgPath" column="product_imgpath"/>
+        <association property="category" javaType="Category">
+            <result property="id" column="id"/>
+            <result property="categoryName" column="category_name"/>
+            <result property="categoryDescription" column="category_description"/>
+            <result property="categoryParentId" column="category_parent_id"/>
+            <result property="leaf" column="leaf"/>
+            <result property="grade" column="grade"/>
+        </association>
+    </resultMap>
+
+
+</mapper>

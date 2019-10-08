@@ -4,12 +4,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
+/**
+ * @author fan
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AdminOperationLog {
+public class AdminOperationLog implements Serializable {
     private Integer id;
     private String aName;
     private String operation;
