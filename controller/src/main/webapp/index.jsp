@@ -138,7 +138,7 @@
                         </a>
                     </li>
                     <li>
-                        <a _href="productServlet?method=findToTree">
+                        <a _href="category-list.jsp">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>类别列表</cite>
                         </a>

@@ -28,10 +28,10 @@
     <form action="<%=request.getContextPath()%>/productServlet?method=subcategories" method="post" class="layui-form">
         <div class="layui-form-item">
             <label for="L_email" class="layui-form-label">
-                <span class="x-red">*</span>pid
+                <span class="x-red"></span>
             </label>
             <div class="layui-input-inline">
-                <input type="text" id="L_email" name="categoryParentId" readonly="readonly" value="${id}"
+                <input type="hidden" id="L_email" name="categoryParentId"  value="${id}"
                        autocomplete="off" class="layui-input">
             </div>
         </div>

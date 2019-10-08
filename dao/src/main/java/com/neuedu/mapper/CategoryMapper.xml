@@ -47,7 +47,7 @@
         set category_name=#{categoryName},
             category_description=#{categoryDescription},
             category_parent_id=#{categoryParentId},
-            leaf=#{left},
+            leaf=#{leaf},
             grade=#{grade}
         where id = #{id}
     </update>

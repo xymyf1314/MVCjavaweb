@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="./css/font.css">
     <link rel="stylesheet" href="./css/xadmin.css">
     <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery3.2.1.js"></script>
     <script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
     <script type="text/javascript" src="./js/xadmin.js"></script>
     <script type="text/javascript" src="./js/cookie.js"></script>
@@ -51,6 +52,68 @@
         </button>
         <span class="x-right" style="line-height:40px">共有数据：88 条</span>
     </xblock>
+    <script>
+        $(function () {
+
+            $.ajax({
+                url: "<%=request.getContextPath()%>/productServlet",
+                dataType: 'json',
+                async: "post",
+                data: {
+                    method: "findToTree"
+                },
+                success: function (categories) {
+                    // var eval1 = eval(categories);
+                    console.log(categories);
+                    findToTree(categories);
+                }
+
+            });
+
+            // 定义一个递归函数
+            function findToTree(categories) {
+                var table = $("#table");
+                for (var i in categories) {
+                    var c = categories[i];
+                    var tr = "<tr>\n" +
+                        "            <td>\n" +
+                        "                <div class=\"layui-unselect layui-form-checkbox\" lay-skin=\"primary\" data-id='2'>\n" +
+                        "                    <i class=\"layui-icon\">&#xe605;</i>\n" +
+                        "                </div>\n" +
+                        "            </td>\n" +
+                        "            <td class=\"aid\">" + c.id + "</td>\n" +
+                        "            <td>" + c.categoryName + "</td>\n" +
+                        "            <td>" + c.categoryDescription + "</td>\n" +
+                        "            <td>" + c.categoryParentId + "</td>\n" +
+                        "            <td>\n" +
+                        (c.leaf == 1 ? "是" : "不是") +
+                        "            </td>\n" +
+                        "            <td>" + c.grade + "</td>\n" +
+                        "            <td>\n" +
+                        "                <a title=\"添加子类别\"\n" +
+                        "                   onclick=\"x_admin_show('添加子类别','<%=request.getContextPath()%>/productServlet?method=load&id=" + c.id + "')\"\n" +
+                        "                   href=\"javascript:;\">\n" +
+                        "                    <i class=\"iconfont\">&#xe6b9;</i>\n" +
+                        "                </a>\n" +
+                        "                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n" +
+                        "                <a title=\"删除\" onclick=\"member_del(this,'要删除的id')\" href=\"javascript:;\">\n" +
+                        "                    <i class=\"layui-icon\">&#xe640;</i>\n" +
+                        "                </a>\n" +
+                        "            </td>\n" +
+                        "        </tr>";
+                    if (c.leaf == 0) {
+                        // 不是叶子结点
+                        $(tr).appendTo(table);
+                        //递归
+                        findToTree(c.children);
+                    } else {
+                        $(tr).appendTo(table);
+                    }
+                }
+            }
+        });
+
+    </script>
     <table class="layui-table">
         <thead>
         <tr>
@@ -66,64 +129,8 @@
             <th>类别级别</th>
             <th>操作</th>
         </thead>
-        <tbody>
-        <c:forEach items="${categories}" var="categorys">
-            <tr>
-                <td>
-                    <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i
-                            class="layui-icon">&#xe605;</i></div>
-                </td>
-                <td class="aid">${categorys.id}</td>
-                <td>${categorys.categoryName}</td>
-                <td>${categorys.categoryDescription}</td>
-                <td>${categorys.categoryParentId}</td>
-                <td>
-                    <c:if test="${categorys.leaf==1}">是</c:if>
-                    <c:if test="${categorys.leaf==0}">否</c:if>
-                </td>
-                <td>${categorys.grade}</td>
-                <td>
-                    <a title="添加子类别" onclick="x_admin_show(this,'<%=request.getContextPath()%>/productServlet?method=load&id=${categorys.id}')"
-                       href="javascript:;">
-                        <i class="iconfont">&#xe6b9;</i>
-                    </a>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">
-                        <i class="layui-icon">&#xe640;</i>
-                    </a>
-                </td>
-            </tr>
-            <c:if test="${categorys.children!=null}">
-                <c:forEach items="${categorys.children}" var="children">
-                    <tr>
-                        <td>
-                            <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i
-                                    class="layui-icon">&#xe605;</i></div>
-                        </td>
-                        <td class="aid">${children.id}</td>
-                        <td>${children.categoryName}</td>
-                        <td>${children.categoryDescription}</td>
-                        <td>${children.categoryParentId}</td>
-                        <td>
-                            <c:if test="${children.leaf==1}">是</c:if>
-                            <c:if test="${children.leaf==0}">否</c:if>
-                        </td>
-                        <td>${children.grade}</td>
-                        <td>
-                            <a title="添加子类别"
-                               onclick="x_admin_show(this,'<%=request.getContextPath()%>/productServlet?method=load&id=${children.id}')"
-                               href="javascript:;">
-                                <i class="iconfont">&#xe6b9;</i>
-                            </a>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">
-                                <i class="layui-icon">&#xe640;</i>
-                            </a>
-                        </td>
-                    </tr>
-                </c:forEach>
-            </c:if>
-        </c:forEach>
+        <tbody id="table">
+
         </tbody>
     </table>
     <div class="page">

@@ -1,5 +1,6 @@
 package com.neuedu.servlet;
 
+import com.alibaba.fastjson.JSON;
 import com.neuedu.entity.Category;
 import com.neuedu.mapper.CategoryMapper;
 import com.neuedu.service.serviceimpl.CategoryServiceImpl;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 /**
@@ -32,12 +34,15 @@ public class ProductServlet extends HttpServlet {
         CategoryMapper mapper = session.getMapper(CategoryMapper.class);
         CategoryServiceImpl categoryService = new CategoryServiceImpl(mapper);
         String method = request.getParameter("method");
+        PrintWriter out = response.getWriter();
         // 查找全部
         if ("findToTree".equals(method)) {
             System.out.println("findToTree");
             List<Category> categories = categoryService.findToTree();
-            request.setAttribute("categories", categories);
-            request.getRequestDispatcher("category-list.jsp").forward(request, response);
+//            request.setAttribute("categories", categories);
+//            request.getRequestDispatcher("category-list.jsp").forward(request, response);
+            String s = JSON.toJSONString(categories);
+            out.print(s);
         } else if ("subcategories".equals(method)) {
             System.out.println("subcategories");
             String categoryName = request.getParameter("categoryName");

@@ -92,7 +92,7 @@
         <!--data-appid : AppID(必须)-->
         <!--data-cbfn : 回调函数名(必须)-->
         <!--data-biz-state : 业务自定义透传参数(可选)-->
-        <button id="TencentCaptcha" data-appid="2096417182" data-cbfn="callback">验证</button>
+        <button  id="TencentCaptcha" data-appid="2096417182" data-cbfn="callback">验证</button>
     </div>
 </div>
 
