@@ -38,8 +38,7 @@
             <version>3.0.95</version>
         </dependency>
     </dependencies>
-<build>
-
+    <build>
         <resources>
             <resource>
                 <directory>src/main/java</directory>
@@ -50,6 +49,6 @@
                 <!--<filtering>true</filtering>-->
             </resource>
         </resources>
-</build>
+    </build>
 
 </project>
