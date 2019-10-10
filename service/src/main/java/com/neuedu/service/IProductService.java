@@ -1,18 +1,10 @@
-package com.neuedu.mapper;
+package com.neuedu.service;
 
 import com.neuedu.entity.Product;
 
 import java.util.List;
 
-/**
- * @program: parentshop
- * @description: 商品的Mapper接口
- * @author: Linluo
- * @create: 2019-10-08 18:31
- **/
-
-
-public interface ProductMapper {
+public interface IProductService {
     /**
      * 查找所有Product的方法
      *
@@ -23,8 +15,10 @@ public interface ProductMapper {
     /**
      * 删除方法
      *
-     * @param categoryId 待删除categoryId
+     * @param id 待删除id
      * @return 是否删除成功
      */
-    void delFromCategoryId(int categoryId);
+    void delFromCategoryId(int id);
+
+
 }

@@ -1,4 +1,6 @@
+import com.neuedu.entity.Category;
 import com.neuedu.entity.Product;
+import com.neuedu.mapper.CategoryMapper;
 import com.neuedu.mapper.ProductMapper;
 import com.neuedu.util.MyBatisUtil;
 import org.apache.ibatis.session.SqlSession;
@@ -22,6 +24,26 @@ public class ProductTest {
         List<Product> products = mapper.findAll();
         for (Product product : products) {
             System.out.println(product);
+        }
+    }
+    @Test
+    public void findById(){
+        SqlSession sqlSession = MyBatisUtil.getSqlSession("mybatis-config.xml");
+        CategoryMapper mapper = sqlSession.getMapper(CategoryMapper.class);
+        List<Category> categories = mapper.findById(4);
+        System.out.println(categories.size());
+        for (Category category : categories) {
+            System.out.println(category);
+        }
+    }
+    @Test
+    public void selectCategoryChildrenByPid(){
+        SqlSession sqlSession = MyBatisUtil.getSqlSession("mybatis-config.xml");
+        CategoryMapper mapper = sqlSession.getMapper(CategoryMapper.class);
+        List<Category> categories = mapper.selectCategoryChildrenByPid(1);
+        System.out.println(categories.size());
+        for (Category category : categories) {
+            System.out.println(category);
         }
     }
 

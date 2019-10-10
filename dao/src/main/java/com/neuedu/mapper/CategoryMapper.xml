@@ -32,7 +32,7 @@
         <result property="categoryParentId" column="category_parent_id"/>
         <result property="leaf" column="leaf"/>
         <result property="grade" column="grade"/>
-        <collection column="id" property="children" ofType="Category" select="selectCategoryChildrenByPid"></collection>
+        <collection column="id" property="children" ofType="Category" select="selectCategoryChildrenByPid"/>
     </resultMap>
     <insert id="insertRoot" parameterType="Category">
         insert into t_category
@@ -51,8 +51,10 @@
             grade=#{grade}
         where id = #{id}
     </update>
-    <!--    <delete id="del" parameterType="int">-->
-    <!--        delete from t_admin where id =#{id}-->
-    <!--    </delete>-->
+    <delete id="del" parameterType="int">
+        delete
+        from t_category
+        where id = #{id}
+    </delete>
 
 </mapper>

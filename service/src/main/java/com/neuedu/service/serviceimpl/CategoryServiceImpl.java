@@ -2,6 +2,7 @@ package com.neuedu.service.serviceimpl;
 
 import com.neuedu.entity.Category;
 import com.neuedu.mapper.CategoryMapper;
+import com.neuedu.mapper.ProductMapper;
 import com.neuedu.service.ICategoryService;
 
 import java.util.List;
@@ -13,16 +14,26 @@ import java.util.List;
  * @create: 2019-09-16 16:05
  **/
 public class CategoryServiceImpl implements ICategoryService {
-    CategoryMapper categoryMapper;
+    private CategoryMapper categoryMapper;
+    private ProductMapper productMapper;
 
     public CategoryServiceImpl(CategoryMapper categoryMapper) {
         this.categoryMapper = categoryMapper;
     }
 
+    public CategoryServiceImpl(CategoryMapper categoryMapper, ProductMapper productMapper) {
+        this.categoryMapper = categoryMapper;
+        this.productMapper = productMapper;
+    }
 
     @Override
     public List<Category> findAll() {
         return categoryMapper.findAll();
+    }
+
+    @Override
+    public List<Category> selectCategoryChildrenByPid(int id) {
+        return categoryMapper.selectCategoryChildrenByPid(id);
     }
 
     @Override
@@ -33,6 +44,27 @@ public class CategoryServiceImpl implements ICategoryService {
     @Override
     public boolean update(Category category) {
         return categoryMapper.update(category);
+    }
+
+    @Override
+    public void del(int id) {
+        Category category = categoryMapper.findById(id).get(0);
+        if (category.getLeaf() == 1) {
+            productMapper.delFromCategoryId(id);
+            List<Category> categories = categoryMapper.selectCategoryChildrenByPid(category.getCategoryParentId());
+            if (categories.size() == 1) {
+                Category category1 = categoryMapper.findById(category.getCategoryParentId()).get(0);
+                category1.setLeaf(1);
+                update(category1);
+                del(category1.getId());
+            }
+            categoryMapper.del(id);
+        } else {
+            List<Category> kidCategories = categoryMapper.selectCategoryChildrenByPid(category.getId());
+            for (Category kidCategory : kidCategories) {
+                del(kidCategory.getId());
+            }
+        }
     }
 
     @Override

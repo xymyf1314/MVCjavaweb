@@ -46,8 +46,13 @@ public interface CategoryMapper {
      * @return 返回查找的结果List<Category>
      */
     List<Category> findById(int id);
-//
-//    Admin findByName(String aname);
+
+    /**
+     *
+     * @param id
+     * @return
+     */
+    List<Category> selectCategoryChildrenByPid(int id);
 //
 //    boolean add(Admin admin);
 
@@ -58,5 +63,12 @@ public interface CategoryMapper {
      * @return 是否成功更新
      */
     boolean update(Category category);
-//    boolean del(int id);
+
+    /**
+     * 删除category的方法
+     *
+     * @param id 待删除id
+     * @return 是否删除成功
+     */
+    boolean del(int id);
 }

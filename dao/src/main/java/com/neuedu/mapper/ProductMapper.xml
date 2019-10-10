@@ -40,6 +40,10 @@
             <result property="grade" column="grade"/>
         </association>
     </resultMap>
-
+    <delete id="delFromCategoryId" parameterType="int">
+        delete
+        from t_product
+        where product_categoryid = #{id}
+    </delete>
 
 </mapper>

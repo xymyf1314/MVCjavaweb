@@ -3,6 +3,7 @@ package com.neuedu.servlet;
 import com.alibaba.fastjson.JSON;
 import com.neuedu.entity.Category;
 import com.neuedu.mapper.CategoryMapper;
+import com.neuedu.mapper.ProductMapper;
 import com.neuedu.service.serviceimpl.CategoryServiceImpl;
 import com.neuedu.util.MyBatisUtil;
 import com.neuedu.util.ServletUtil;
@@ -32,7 +33,9 @@ public class ProductServlet extends HttpServlet {
         ServletUtil.setCharacter(request, response);
         SqlSession session = MyBatisUtil.getSqlSession("mybatis-config.xml");
         CategoryMapper mapper = session.getMapper(CategoryMapper.class);
+        ProductMapper productMapper = session.getMapper(ProductMapper.class);
         CategoryServiceImpl categoryService = new CategoryServiceImpl(mapper);
+        CategoryServiceImpl categoryService1 = new CategoryServiceImpl(mapper, productMapper);
         String method = request.getParameter("method");
         PrintWriter out = response.getWriter();
         // 查找全部
@@ -61,6 +64,8 @@ public class ProductServlet extends HttpServlet {
             String categoryDescription = request.getParameter("categoryDescription");
             categoryService.insertRoot(categoryName, categoryDescription);
             session.commit();
+        } else if ("del".equals(method)) {
+            categoryService1.del(1);
         }
     }
 
