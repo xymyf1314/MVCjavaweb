@@ -44,7 +44,7 @@ public class CategoryTest {
         CategoryMapper categoryMapper = sqlSession.getMapper(CategoryMapper.class);
         ProductMapper productMapper = sqlSession.getMapper(ProductMapper.class);
         CategoryServiceImpl categoryService = new CategoryServiceImpl(categoryMapper, productMapper);
-        categoryService.del(2);
+        categoryService.del(1);
         sqlSession.commit();
     }
 }
